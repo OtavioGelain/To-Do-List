@@ -1,6 +1,14 @@
 import bcrypt from 'bcrypt'
 import { User } from "../entities/User";
 import { AppSource } from "../database/data-source";
+import { CryptPassword } from '../utils/cryptPassword';
+import { generateToken } from '../utils/generateToken';
+
+interface RegisterUser{
+    name: string;
+    email: string; 
+    password: string;
+}
 
 const userRepository = AppSource.getRepository(User)
 
@@ -17,8 +25,8 @@ export class UserService{
         }
         return userById
     }    
-    static async createUser(data: Partial<User>): Promise<User>{
-        const hashedPassword = await bcrypt.hash(data.password!, 10)
+    static async createUser(data: RegisterUser): Promise<User>{
+        const hashedPassword = await CryptPassword.encryptedPassword(data.password)
         const user = userRepository.create({...data, password:hashedPassword })
         await userRepository.save(user)
 
@@ -49,5 +57,26 @@ export class UserService{
         userRepository.save(user)
 
         return user
+    }
+    static async login(email: string, password: string){
+        const user = await userRepository.findOneBy({ email })
+
+        if(!user){
+            throw new Error('User not found')
+        }
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if(!passwordMatch){
+            throw new Error('Invalid password')
+        }
+        const token =  generateToken(user.id, user.password)
+        
+        return {
+            user: {
+            id: user.id,
+            name: user.name,
+            email: user.email
+            },
+            token
+        }
     }
 }

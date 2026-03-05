@@ -7,6 +7,7 @@ const envSchema = z.object({
     DB_USER: z.string().default('postgres'),
     DB_PASSWORD: z.string().default('123456'),
     DB_NAME: z.string().default('todo-list'),
+    SENHA_JWT: z.string().default('123456'),
 
     SERVER_PORT: z.coerce.number().default(3000)
 })
