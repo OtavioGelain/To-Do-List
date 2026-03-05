@@ -60,23 +60,18 @@ export class UserService{
     }
     static async login(email: string, password: string){
         const user = await userRepository.findOneBy({ email })
-
+        console.log(user)
         if(!user){
             throw new Error('User not found')
         }
-        const passwordMatch = await bcrypt.compare(password, user.password);
+
+        const passwordMatch =  await bcrypt.compare(password, user?.password);
         if(!passwordMatch){
             throw new Error('Invalid password')
         }
-        const token =  generateToken(user.id, user.password)
+
+        const token =  generateToken(user.id, user.email)
+        return token
         
-        return {
-            user: {
-            id: user.id,
-            name: user.name,
-            email: user.email
-            },
-            token
-        }
     }
 }

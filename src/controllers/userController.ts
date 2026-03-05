@@ -61,7 +61,7 @@ export class UserController{
     static async login(req: Request, res: Response): Promise<Response | undefined>{
         try{
             const { email, password } = req.body
-            const user = UserService.login(email, password)
+            const user = await UserService.login(email, password)
 
             return res.status(200).json({message:"Login realizado", user})
         }catch(error){
