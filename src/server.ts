@@ -1,6 +1,7 @@
 import { app } from "./app";
 import { AppSource } from "./database/data-source";
 import { env } from "./env/envSchema";
+import 'dotenv/config'
 
 app.listen(env?.SERVER_PORT, () => {
     console.log('Server is running')

@@ -13,5 +13,5 @@ export const AppSource = new DataSource({
     database: env?.DB_NAME,
     entities: [User, Task],
     synchronize: false,
-    migrations: ['src/database/migrations/*.ts']
+    migrations: ['./src/database/migrations/*.ts']
 })

@@ -1,4 +1,4 @@
-import { PrimaryGeneratedColumn, Column, Entity, ManyToOne } from "typeorm";
+import { PrimaryGeneratedColumn, Column, Entity, ManyToOne, CreateDateColumn } from "typeorm";
 import { User } from "./User";
 
 @Entity()
@@ -15,7 +15,7 @@ export class Task{
     @Column()
     complete: boolean;
 
-    @Column()
+    @CreateDateColumn({ name: 'created_at' })
     created_at: Date;
 
     @ManyToOne(() => User , (user) => user.task)

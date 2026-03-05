@@ -65,7 +65,7 @@ export class UserService{
             throw new Error('User not found')
         }
 
-        const passwordMatch =  await bcrypt.compare(password, user?.password);
+        const passwordMatch =  await bcrypt.compare(password, user.password);
         if(!passwordMatch){
             throw new Error('Invalid password')
         }
